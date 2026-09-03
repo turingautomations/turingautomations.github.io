@@ -4,13 +4,49 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Turing Automations</title>
+  <style>
+    .marquee {
+      overflow: hidden;
+      white-space: nowrap;
+      border-top: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+      padding: 0.5em 0;
+    }
+
+    .marquee__track {
+      display: inline-flex;
+      animation: marquee 40s linear infinite;
+    }
+
+    .marquee:hover .marquee__track {
+      animation-play-state: paused;
+    }
+
+    .marquee__item {
+      padding-right: 4em;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .marquee { white-space: normal; }
+      .marquee__track { animation: none; display: block; }
+      .marquee__item[aria-hidden="true"] { display: none; }
+    }
+  </style>
 </head>
 <body>
   <h1>Turing Automations</h1>
 
-  <p>
-    switching elements are modeled by quantum mechanics described by differential equations whose behavior is captured by numerical approximations represented in computer programs executing on computers composed of switching elements
-  </p>
+  <div class="marquee" role="marquee">
+    <div class="marquee__track">
+      <span class="marquee__item">switching elements are modeled by quantum mechanics described by differential equations whose behavior is captured by numerical approximations represented in computer programs executing on computers composed of switching elements</span>
+      <span class="marquee__item" aria-hidden="true">switching elements are modeled by quantum mechanics described by differential equations whose behavior is captured by numerical approximations represented in computer programs executing on computers composed of switching elements</span>
+    </div>
+  </div>
 </body>
 </html>
