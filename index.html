@@ -7,11 +7,19 @@
   <title>Turing Automations</title>
   <style>
     .marquee {
-      overflow: hidden;
-      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 0.75em;
       border-top: 1px solid currentColor;
       border-bottom: 1px solid currentColor;
       padding: 0.5em 0;
+    }
+
+    .marquee__viewport {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
     }
 
     .marquee__track {
@@ -19,12 +27,20 @@
       animation: marquee 40s linear infinite;
     }
 
-    .marquee:hover .marquee__track {
+    .marquee:hover .marquee__track,
+    .marquee:focus-within .marquee__track,
+    .marquee[data-paused="true"] .marquee__track {
       animation-play-state: paused;
     }
 
     .marquee__item {
       padding-right: 4em;
+    }
+
+    .marquee__toggle {
+      flex: none;
+      font: inherit;
+      cursor: pointer;
     }
 
     @keyframes marquee {
@@ -33,20 +49,38 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .marquee { white-space: normal; }
+      .marquee__viewport { white-space: normal; }
       .marquee__track { animation: none; display: block; }
       .marquee__item[aria-hidden="true"] { display: none; }
+      .marquee__toggle { display: none; }
     }
   </style>
 </head>
 <body>
   <h1>Turing Automations</h1>
 
-  <div class="marquee" role="marquee">
-    <div class="marquee__track">
-      <span class="marquee__item">switching elements are modeled by quantum mechanics described by differential equations whose behavior is captured by numerical approximations represented in computer programs executing on computers composed of switching elements</span>
-      <span class="marquee__item" aria-hidden="true">switching elements are modeled by quantum mechanics described by differential equations whose behavior is captured by numerical approximations represented in computer programs executing on computers composed of switching elements</span>
+  <div class="marquee" role="marquee" data-paused="false">
+    <div class="marquee__viewport">
+      <div class="marquee__track">
+        <span class="marquee__item">switching elements are modeled by quantum mechanics described by differential equations whose behavior is captured by numerical approximations represented in computer programs executing on computers composed of switching elements</span>
+        <span class="marquee__item" aria-hidden="true">switching elements are modeled by quantum mechanics described by differential equations whose behavior is captured by numerical approximations represented in computer programs executing on computers composed of switching elements</span>
+      </div>
     </div>
+    <button class="marquee__toggle" type="button" aria-pressed="false" aria-label="Pause scrolling text">Pause</button>
   </div>
+
+  <script>
+    (function () {
+      var marquee = document.querySelector('.marquee');
+      var toggle = marquee.querySelector('.marquee__toggle');
+      toggle.addEventListener('click', function () {
+        var paused = marquee.getAttribute('data-paused') !== 'true';
+        marquee.setAttribute('data-paused', String(paused));
+        toggle.setAttribute('aria-pressed', String(paused));
+        toggle.setAttribute('aria-label', paused ? 'Resume scrolling text' : 'Pause scrolling text');
+        toggle.textContent = paused ? 'Play' : 'Pause';
+      });
+    })();
+  </script>
 </body>
 </html>
